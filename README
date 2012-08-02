@@ -1,0 +1,16 @@
+This project is based on the original demo from Google. The original example show you how to send an image file
+from the client to the group owner.Wit this version, I show youba way to send data between two devices (be group or not).
+
+How To Use
+==========
+1. Import into Eclipse
+
+2. Run in your device!
+
+NOTES
+=====
+The program has been tested on two Samsung Nexus devices both runnig Android 4.1.1
+
+The devices were resetted to factory default.
+
+This code is not appropriate for production or comercial uses.
