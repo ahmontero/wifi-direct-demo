@@ -1,5 +1,5 @@
-This project is based on the original demo from Google. The original example show you how to send an image file
-from the client to the group owner.Wit this version, I show youba way to send data between two devices (be group or not).
+This project is based on the original demo from Google. The original example show us how to send an image file
+from the client to the group owner. With this version, I try to show how to send data between two devices (be group owner or not).
 
 How To Use
 ==========
