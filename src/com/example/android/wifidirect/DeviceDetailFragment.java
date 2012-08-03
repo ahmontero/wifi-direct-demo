@@ -52,8 +52,8 @@ import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 public class DeviceDetailFragment extends Fragment implements ConnectionInfoListener {
 
 	public static final String IP_SERVER = "192.168.49.1";
-	public static int PORT = 5000;
-	private static boolean server_created = false;
+	public static int PORT = 8988;
+	private static boolean server_running = false;
 
 	protected static final int CHOOSE_FILE_RESULT_CODE = 20;
 	private View mContentView = null;
@@ -144,7 +144,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 			serviceIntent.putExtra(FileTransferService.EXTRAS_ADDRESS, IP_SERVER);
 		}
 
-		serviceIntent.putExtra(FileTransferService.EXTRAS_PORT, 8988);
+		serviceIntent.putExtra(FileTransferService.EXTRAS_PORT, PORT);
 		getActivity().startService(serviceIntent);
 	}
 
@@ -168,9 +168,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
 		mContentView.findViewById(R.id.btn_start_client).setVisibility(View.VISIBLE);
 
-		if (!server_created){
+		if (!server_running){
 			new ServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text)).execute();
-			server_created = true;
+			server_running = true;
 		}
 
 		// hide the connect button
@@ -230,7 +230,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		@Override
 		protected String doInBackground(Void... params) {
 			try {
-				ServerSocket serverSocket = new ServerSocket(8988);
+				ServerSocket serverSocket = new ServerSocket(PORT);
 				Log.d(WiFiDirectActivity.TAG, "Server: Socket opened");
 				Socket client = serverSocket.accept();
 				Log.d(WiFiDirectActivity.TAG, "Server: connection done");
@@ -247,7 +247,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				InputStream inputstream = client.getInputStream();
 				copyFile(inputstream, new FileOutputStream(f));
 				serverSocket.close();
-				server_created = false;
+				server_running = false;
 				return f.getAbsolutePath();
 			} catch (IOException e) {
 				Log.e(WiFiDirectActivity.TAG, e.getMessage());
