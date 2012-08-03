@@ -13,9 +13,11 @@ import android.util.Log;
 
 public class Utils {
 
+	private final static String p2pInt = "p2p-p2p0";
+
 	public static String getIPFromMac(String MAC) {
 		/*
-		 * method modified from
+		 * method modified from:
 		 * 
 		 * http://www.flattermann.net/2011/02/android-howto-find-the-hardware-mac-address-of-a-remote-host/
 		 * 
@@ -25,11 +27,12 @@ public class Utils {
 			br = new BufferedReader(new FileReader("/proc/net/arp"));
 			String line;
 			while ((line = br.readLine()) != null) {
+
 				String[] splitted = line.split(" +");
 				if (splitted != null && splitted.length >= 4) {
 					// Basic sanity check
 					String device = splitted[5];
-					if (device.matches(".*p2p-p2p0.*")){
+					if (device.matches(".*" +p2pInt+ ".*")){
 						String mac = splitted[3];
 						if (mac.matches(MAC)) {
 							return splitted[0];
@@ -52,7 +55,7 @@ public class Utils {
 
 	public static String getLocalIPAddress() {
 		/*
-		 * ripped from:
+		 * modified from:
 		 * 
 		 * http://thinkandroid.wordpress.com/2010/03/27/incorporating-socket-programming-into-your-applications/
 		 * 
@@ -62,12 +65,12 @@ public class Utils {
 				NetworkInterface intf = en.nextElement();
 				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
-					if (!inetAddress.isLoopbackAddress()) {
+
+					String iface = intf.getName();
+					if(iface.matches(".*" +p2pInt+ ".*")){
 						if (inetAddress instanceof Inet4Address) { // fix for Galaxy Nexus. IPv4 is easy to use :-)
 							return getDottedDecimalIP(inetAddress.getAddress());
-						}//else if(inetAddress instanceof Inet6Address){
-						//	return inetAddress.getHostAddress().toString(); // Galaxy Nexus returns IPv6
-						//}
+						}
 					}
 				}
 			}
